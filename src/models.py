@@ -36,14 +36,14 @@ class Personajes(db.Model):
     favoritePersonaje = db.relationship('Favoritos', backref='personajes', lazy=True)
 
     def __repr__(self):
-        return '<Name %r>' % self.name
+        return '<Personajes %r>' % self.name
 
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
             "lastname": self.lastname,
-            "planeta": self.id_planeta,
+            "id_planeta": self.id_planeta,
             "ojos": self.ojos,
             "pelo": self.pelo,
             "altura": self.altura,
@@ -64,7 +64,7 @@ class Planetas(db.Model):
     favoritePlanet = db.relationship('Favoritos', backref='planetas', lazy=True)
 
     def __repr__(self):
-        return '<Name %r>' % self.name
+        return '<Planetas %r>' % self.name
 
     def serialize(self):
         return {
@@ -86,11 +86,10 @@ class Vehiculos(db.Model):
     favoriteVehiculo = db.relationship('Favoritos', backref='vehiculos', lazy=True)
     
     def __repr__(self):
-        return '<Name %r>' % self.name
+        return '<Vehiculos %r>' % self.name
 
     def serialize(self):
         return {
-            "id": self.id,
             "name": self.name,
             "cilindrada": self.cilindrada,
             "capacidad": self.capacidad,
@@ -105,7 +104,7 @@ class Favoritos(db.Model):
     id_vehiculo = db.Column(db.Integer, db.ForeignKey('vehiculos.id'),nullable=False)
 
     def __repr__(self):
-        return '<User %r>' % self.id_user
+        return '<Favoritos %r>' % self.id_user
 
     def serialize(self):
         return {

@@ -8,7 +8,8 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User , Personajes, Planetas, Vehiculos, Favoritos
+import json
 #from models import Person
 
 app = Flask(__name__)
@@ -33,8 +34,131 @@ def sitemap():
 @app.route('/user', methods=['GET'])
 def handle_hello():
 
+    users=User.query.all()
+    ulist=list(map(lambda p: p.serialize(), users))
+    print(ulist)
     response_body = {
-        "msg": "Hello, this is your GET /user response "
+        "results": ulist
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/personajes', methods=['GET'])
+def get_personajes():
+
+    personajes=Personajes.query.all()
+    plist=list(map(lambda p: p.serialize(), personajes))
+    print(plist)
+    response_body = {
+        "results": plist
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/planetas', methods=['GET'])
+def get_planetas():
+
+    planetas=Planetas.query.all()
+    plist=list(map(lambda p: p.serialize(), planetas))
+    print(plist)
+    response_body = {
+        "results": plist
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/vehiculos', methods=['GET'])
+def get_vehiculos():
+
+    vehiculos=Vehiculos.query.all()
+    plist=list(map(lambda p: p.serialize(), vehiculos))
+    print(plist)
+    response_body = {
+        "results": plist
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/favoritos', methods=['GET'])
+def get_favoritos():
+
+    favoritos=Favoritos.query.all()
+    plist=list(map(lambda p: p.serialize(), favoritos))
+    print(plist)
+    response_body = {
+        "results": plist
+    }
+
+    return jsonify(response_body), 200
+
+
+@app.route('/planetas', methods=['POST'])
+def set_planetas():
+
+    body=json.loads(request.data)
+    planet=Planetas(name=body["name"], clima=body["clima"], poblacion=body["poblacion"], rotacion=body["rotacion"])
+    db.session.add(planet)
+    db.session.commit()
+
+    response_body = {
+        "Planet added"
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/personajes', methods=['POST'])
+def set_personajes():
+
+    body=json.loads(request.data)
+    person=Personajes(name=body["name"], lastname=body["lastname"], id_planeta=body["id_planeta"], ojos=body["ojos"], pelo=body["pelo"], altura=body["altura"], peso=body["peso"])
+    db.session.add(person)
+    db.session.commit()
+
+    response_body = {
+        "Character added"
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/vehiculos', methods=['POST'])
+def set_vehiculos():
+
+    body=json.loads(request.data)
+    veh=Vehiculos(name=body["name"], cilindrada=body["cilindrada"], capacidad=body["capacidad"])
+    db.session.add(veh)
+    db.session.commit()
+
+    response_body = {
+        "Vehicle added"
+    }
+
+    return jsonify(response_body), 200
+
+
+@app.route('/favoritos', methods=['POST'])
+def set_favoritos():
+
+    body=json.loads(request.data)
+    fav=Favoritos(id_user=body["id_user"], id_personaje=body["id_personaje"], id_planeta=body["id_planeta"], id_vehiculo=body["id_vehiculo"])
+    db.session.add(fav)
+    db.session.commit()
+
+    response_body = {
+        "Favorite added"
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/user', methods=['POST'])
+def add_user():
+
+    body=json.loads(request.data)
+    users=User(name=body["name"], password=body["password"])
+    db.session.add(users)
+    db.session.commit()
+
+    response_body = {
+        "User added"
     }
 
     return jsonify(response_body), 200

@@ -99,9 +99,9 @@ class Favoritos(db.Model):
     #__tablename__ = 'favoritos'
     id = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
-    id_personaje = db.Column(db.Integer, db.ForeignKey('personajes.id'),nullable=False)
-    id_planeta = db.Column(db.Integer, db.ForeignKey('planetas.id'),nullable=False)
-    id_vehiculo = db.Column(db.Integer, db.ForeignKey('vehiculos.id'),nullable=False)
+    id_personaje = db.Column(db.Integer, db.ForeignKey('personajes.id'),nullable=True)
+    id_planeta = db.Column(db.Integer, db.ForeignKey('planetas.id'),nullable=True)
+    id_vehiculo = db.Column(db.Integer, db.ForeignKey('vehiculos.id'),nullable=True)
 
     def __repr__(self):
         return '<Favoritos %r>' % self.id_user
@@ -109,10 +109,10 @@ class Favoritos(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "user": self.id_user,
-            "personaje": self.id_personaje,
-            "planeta": self.id_planeta,
-            "vehiculo": self.id_vehiculo,
+            "id_user": self.id_user,
+            "id_personaje": self.id_personaje,
+            "id_planeta": self.id_planeta,
+            "id_vehiculo": self.id_vehiculo,
         }
 
 

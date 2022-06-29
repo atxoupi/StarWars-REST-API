@@ -101,7 +101,7 @@ def set_planetas():
     db.session.commit()
 
     response_body = {
-        "Planet added"
+        "result": planet.serialize()
     }
 
     return jsonify(response_body), 200
@@ -115,7 +115,7 @@ def set_personajes():
     db.session.commit()
 
     response_body = {
-        "Character added"
+        "results":person.serialize()
     }
 
     return jsonify(response_body), 200
@@ -129,7 +129,7 @@ def set_vehiculos():
     db.session.commit()
 
     response_body = {
-        "Vehicle added"
+        "results": veh.serialize()
     }
 
     return jsonify(response_body), 200
@@ -144,7 +144,7 @@ def set_favoritos():
     db.session.commit()
 
     response_body = {
-        "Favorite added"
+        "result":fav.serialize()
     }
 
     return jsonify(response_body), 200
@@ -158,7 +158,7 @@ def add_user():
     db.session.commit()
 
     response_body = {
-        "User added"
+        "result": users.serialize()
     }
 
     return jsonify(response_body), 200

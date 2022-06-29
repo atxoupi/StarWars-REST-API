@@ -55,6 +55,16 @@ def get_personajes():
 
     return jsonify(response_body), 200
 
+@app.route('/personajes/<int:id>', methods=['GET'])
+def get_personaje(id):
+
+    personaje=Personajes.query.filter_by(id=id).first()
+    response_body = {
+        "results": personaje.serialize()
+    }
+
+    return jsonify(response_body), 200
+
 @app.route('/planetas', methods=['GET'])
 def get_planetas():
 
@@ -148,6 +158,21 @@ def set_favoritos():
     }
 
     return jsonify(response_body), 200
+#aqui agregamos un planeta favorito de un usurario
+
+@app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
+def set_favoritos_planeta(planet_id):
+
+    body=json.loads(request.data)
+    fav=Favoritos(id_user=body["id_user"], id_planeta=planet_id)
+    db.session.add(fav)
+    db.session.commit()
+
+    response_body = {
+        "result":fav.serialize()
+    }
+
+    return jsonify(response_body), 200
 
 @app.route('/user', methods=['POST'])
 def add_user():
@@ -159,6 +184,21 @@ def add_user():
 
     response_body = {
         "result": users.serialize()
+    }
+
+    return jsonify(response_body), 200
+
+#aquí eliminamos un favorito
+@app.route('/favorite/<int:id_usuario>/planet/<int:planet_id>', methods=['DELETE'])
+def del_favoritos_planeta(planet_id, id_usuario):
+
+    planetfav=Favoritos.query.filter_by(id_user=id_usuario).filter_by(id_planeta=planet_id).first()
+    print(planetfav)
+    #db.session.delete(fav)
+    #db.session.commit()
+
+    response_body = {
+        "result":"ok"
     }
 
     return jsonify(response_body), 200
